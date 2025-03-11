@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
+import math
+from tqdm import tqdm
 
 # final results with this code
 # step=4800: train loss = 1.0883, val loss = 1.4908
@@ -206,11 +208,12 @@ class GPT(nn.Module):
     
 model = GPT()
 m = model.to(device)
+print(next(m.parameters()).device)
 print(sum([p.numel() for p in m.parameters()]))
 optimizer = torch.optim.AdamW(m.parameters(), lr=learning_rate)
 
 # training loop
-for iter in range(max_iters): # increase number of steps for good results... 
+for iter in tqdm(range(max_iters)): # increase number of steps for good results... 
     
     # evaluate once in a while
     if iter % eval_interval == 0:
