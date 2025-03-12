@@ -22,10 +22,21 @@ eval_interval = 300
 learning_rate = 3e-4
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 eval_iters = 200
-n_embd = 384
-n_heads = 6
-n_layer = 6
-dropout = .2
+
+if device == 'cpu':
+    batch_size = 32 
+    block_size = 128 
+    n_embd = 128 
+    n_heads = 4  
+    n_layer = 4  
+    dropout = 0.1  
+else:
+    n_embd = 384 
+    n_heads = 6 
+    n_layer = 6  
+
+print(f"Using device: {device}")
+print(f"batch_size={batch_size}, block_size={block_size}, n_embd={n_embd}, n_heads={n_heads}, n_layer={n_layer}")
 
 torch.manual_seed(1337)
 
@@ -230,5 +241,5 @@ for iter in tqdm(range(max_iters)): # increase number of steps for good results.
     optimizer.step()
 
 # generate some text
-context = torch.zeros((1, 256), dtype=torch.long, device=device)
+context = torch.zeros((1, 128), dtype=torch.long, device=device)
 print(decode(m.generate(idx = context, max_new_tokens=100)[0].tolist()))
