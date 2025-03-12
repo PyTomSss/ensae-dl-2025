@@ -230,5 +230,5 @@ for iter in tqdm(range(max_iters)): # increase number of steps for good results.
     optimizer.step()
 
 # generate some text
-context = torch.zeros((1, 1), dtype=torch.long, device=device)
+context = torch.zeros((1, 256), dtype=torch.long, device=device)
 print(decode(m.generate(idx = context, max_new_tokens=100)[0].tolist()))
